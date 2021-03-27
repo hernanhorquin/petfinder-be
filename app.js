@@ -1,16 +1,17 @@
-const { Sequelize } = require('sequelize');
 const express = require('express');
-const path = require('path');
-const cookieParser = require('cookie-parser');
-const jwt = require('jsonwebtoken');
-const jwtKey = require('./configs/config');
+const helmet = require('helmet');
+const xss = require('xss-clean');
+const compression = require('compression');
 const cors = require('cors');
-const logger = require('morgan');
+const httpStatus = require('http-status');
+const cookieParser = require('cookie-parser');
+const settings = require('./src/config/settings');
+//const { authLimiter } = require('./src/middlewares/rate-limiter');
+const routes = require('./src/routes');
+// const { errorConverter, errorHandler } = require('./src/middlewares/error');
+// const ApiError = require('./src/utils/api-error');
 
-const app = express()
-
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, 'public')));
+const app = express();
 
 // parse json request body
 app.use(express.json());
@@ -21,43 +22,32 @@ app.use(express.urlencoded({ extended: true }));
 // sanitize request data
 app.use(xss());
 
+// gzip compression
+app.use(compression());
+
 // enable cors
 app.use(cors());
 app.options('*', cors());
 
+app.use(cookieParser());
 
-const port = 3000
+// api routes
+app.use(routes);
 
-app.get('/', (req, res) => {
-  res.send('Hello World!')
-})
-
-/* 404 not found */
+// send back a 404 error for any unknown api request
 app.use((req, res, next) => {
-  const response = {
-    error: true,
-    code: 404,
-    message: 'URL not found',
-  };
-  res.status(404).send(response);
+    next(new ApiError(httpStatus.NOT_FOUND, 'Not found'));
 });
 
-//* Error handling */
-app.use((err, req, res, next) => {
-  res.status(500).send(err.message);
-});
+// convert error to ApiError, if needed
+app.use(errorConverter);
 
-app.listen(port, () => {
-  console.log(`Example app listening at http://localhost:${port}`)
-})
+// handle error
+app.use(errorHandler);
 
-
-/*
-1_descargar nodejs
-2_npm install
-3_npx sequelize-cli db:migrate con este comando se corren las migraciones que crean las tablas en la bd, previamente hay que configurar el config.json con los datos de conexión de la BD
-
-*/
+module.exports = app;
 
 
-//USER MIGRATION //npx sequelize-cli model:generate --name User --attributes firstName:string,lastname:string,cellphone:string,adrress:string,lastName:string,email:string,creationdate:date,citycode:integer
+
+
+//npx sequelize-cli model:generate --name User --attributes firstName:string,lastname:string,cellphone:string,adrress:string,lastName:string,email:string,creationdate:date,citycode:integer
