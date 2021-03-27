@@ -29,7 +29,7 @@ module.exports = {
       creationdate: {
         type: Sequelize.DATE
       },
-      citycode: {
+      citycode: { 
         type: Sequelize.INTEGER
       },
       createdAt: {
