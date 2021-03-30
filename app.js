@@ -5,9 +5,9 @@ const compression = require('compression');
 const cors = require('cors');
 const httpStatus = require('http-status');
 const cookieParser = require('cookie-parser');
-const settings = require('./src/config/settings');
 //const { authLimiter } = require('./src/middlewares/rate-limiter');
 const routes = require('./src/routes');
+
 // const { errorConverter, errorHandler } = require('./src/middlewares/error');
 // const ApiError = require('./src/utils/api-error');
 
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(xss());
 
 // gzip compression
-app.use(compression());
+//app.use(compression());
 
 // enable cors
 app.use(cors());
@@ -40,10 +40,10 @@ app.use((req, res, next) => {
 });
 
 // convert error to ApiError, if needed
-app.use(errorConverter);
+//app.use(errorConverter);
 
 // handle error
-app.use(errorHandler);
+//app.use(errorHandler);
 
 module.exports = app;
 
