@@ -31,7 +31,8 @@ const singup = async (req, res, next) => {
     adrress,
     email,
   } = req.body;
-
+  console.log('aca');
+  console.log(firstName, lastname, password, cellphone, adrress, email)
   let hashedPassword;
   try {
     hashedPassword = await bcrypt.hash(password, 12);
