@@ -1,7 +1,9 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secret = require('../utils/secret');
-const { Admin } = require('../../sequelize/models');
+const { User } = require('../../sequelize/models');
+const ApiResponse = require('../models/response.model');
+const httpStatus = require('http-status');
 
 let response = {
   error: false,
@@ -23,9 +25,11 @@ const singup = async (req, res, next) => {
   // de comprobacion de usuarios existentes
   const {
     firstName,
-    lastName,
-    userName,
+    lastname,
     password,
+    cellphone,
+    adrress,
+    email,
   } = req.body;
 
   let hashedPassword;
@@ -37,9 +41,9 @@ const singup = async (req, res, next) => {
 
   try {
     const NewUser = {
-      firstName, lastName, userName, password: hashedPassword,
+      firstName, lastname, email, password: hashedPassword, cellphone, adrress, citycode: 1,
     };
-    const ResNewUser = await Admin.create(NewUser);
+    const ResNewUser = await User.create(NewUser);
     return res.status(201).json({
       NewUserDb: ResNewUser,
     });
@@ -54,7 +58,7 @@ const login = async (req, res, next) => {
   let existingUser;
 
   try {
-    existingUser = await Admin.findOne({
+    existingUser = await User.findOne({
       where: {
         userName,
       },
@@ -83,7 +87,7 @@ const login = async (req, res, next) => {
     token = jwt.sign(
       { userId: existingUser.id, email: existingUser.email },
       secret,
-      { expiresIn: '2h' },
+      { expiresIn: '8h' },
     );
 
     const userData = {
