@@ -32,7 +32,7 @@ app.options('*', cors());
 app.use(cookieParser());
 
 // api routes
-app.use(routes);
+app.use('/', routes);
 
 // send back a 404 error for any unknown api request
 app.use((req, res, next) => {
