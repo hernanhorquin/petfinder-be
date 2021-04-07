@@ -9,7 +9,7 @@ const cookieParser = require('cookie-parser');
 const routes = require('./src/routes');
 
 // const { errorConverter, errorHandler } = require('./src/middlewares/error');
-// const ApiError = require('./src/utils/api-error');
+const ApiError = require('./src/utils/ApiError');
 
 const app = express();
 

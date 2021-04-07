@@ -38,7 +38,7 @@
 const http = require('http');
 const debug = require('debug')('hola:server');
 const app = require('./app');
-
+require('dotenv').config()
 /**
  * Normalize a port into a number, string, or false.
  */

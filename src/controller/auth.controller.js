@@ -1,6 +1,6 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
-const secret = require('../utils/secret');
+const secret = require('../utils/token');
 const { User } = require('../../sequelize/models');
 const ApiResponse = require('../models/response.model');
 const httpStatus = require('http-status');
@@ -31,8 +31,7 @@ const singup = async (req, res, next) => {
     adrress,
     email,
   } = req.body;
-  console.log(req.body);
-  console.log(firstName, lastname, email, password, cellphone, adrress);
+
   let hashedPassword;
   try {
     hashedPassword = await bcrypt.hash(password, 12);
@@ -55,7 +54,7 @@ const singup = async (req, res, next) => {
 
 const login = async (req, res, next) => {
   const { email, password } = req.body;
-
+  console.log(email, password);
   let existingUser;
 
   try {
@@ -78,18 +77,14 @@ const login = async (req, res, next) => {
   } catch (err) {
     return res.status(500).send({ message: 'Acceso erroneo, verifica tus credenciales e intenta de nuevo.' });
   }
-
+  
   if (!isValidPassword) {
     return res.status(403).send({ message: 'Acceso erroneo, verifica tus credenciales e intenta de nuevo.' });
   }
 
   let token;
   try {
-    token = jwt.sign(
-      { userId: existingUser.id, email: existingUser.email },
-      secret,
-      { expiresIn: '8h' },
-    );
+    token = jwt.sign({ userId: existingUser.id, email: existingUser.email }, process.env.JWT_SECRET);
 
     const userData = {
       userId: existingUser.id,
