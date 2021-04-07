@@ -31,8 +31,8 @@ const singup = async (req, res, next) => {
     adrress,
     email,
   } = req.body;
-  console.log('aca');
-  console.log(firstName, lastname, password, cellphone, adrress, email)
+  console.log(req.body);
+  console.log(firstName, lastname, email, password, cellphone, adrress);
   let hashedPassword;
   try {
     hashedPassword = await bcrypt.hash(password, 12);
@@ -54,18 +54,18 @@ const singup = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-  const { userName, password } = req.body;
+  const { email, password } = req.body;
 
   let existingUser;
 
   try {
     existingUser = await User.findOne({
       where: {
-        userName,
+        email,
       },
     });
   } catch (err) {
-    return res.status(500).send({ message: 'Error en el Acceso intente nuevamente.' });
+    return res.status(500).send({ message: 'Usuario existente' });
   }
 
   if (!existingUser) {
