@@ -20,16 +20,16 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // sanitize request data
-app.use(xss());
+//app.use(xss());
 
 // gzip compression
 //app.use(compression());
 
 // enable cors
-app.use(cors());
-app.options('*', cors());
+//app.use(cors());
+//app.options('*', cors());
 
-app.use(cookieParser());
+//app.use(cookieParser());
 
 // api routes
 app.use('/', routes);
