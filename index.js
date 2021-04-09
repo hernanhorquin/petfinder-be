@@ -36,6 +36,7 @@
 // });
 
 const http = require('http');
+const https = require('https');
 const debug = require('debug')('hola:server');
 const app = require('./app');
 require('dotenv').config()
@@ -70,7 +71,7 @@ app.set('port', port);
  * Create HTTP server.
  */
 
-const server = http.createServer(app);
+const server = https.createServer(app);
 
 /**
  * Event listener for HTTP server "error" event.
