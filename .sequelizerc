@@ -1,5 +1,4 @@
 module.exports = {
-  'config': '/app/config/config.js',
   'migrations-path': '/app/migrations',
   'seeders-path': '/app/seeders'
 }
