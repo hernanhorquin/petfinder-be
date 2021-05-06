@@ -1,1 +1,1 @@
-app.listen(process.env.PORT || 3000)
+web: node index.js
