@@ -1,7 +1,7 @@
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const secret = require('../utils/token');
-const { User } = require('../models');
+const { User } = require('../../models');
 const ApiResponse = require('../models/response.model');
 const httpStatus = require('http-status');
 
