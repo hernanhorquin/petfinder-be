@@ -26,10 +26,10 @@ app.use(express.urlencoded({ extended: true }));
 //app.use(compression());
 
 // enable cors
-//app.use(cors());
-//app.options('*', cors());
+app.use(cors());
+app.options('*', cors());
 
-//app.use(cookieParser());
+app.use(cookieParser());
 
 // api routes
 app.use('/', routes);
