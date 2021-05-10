@@ -53,8 +53,8 @@ const singup = async (req, res, next) => {
 };
 
 const login = async (req, res, next) => {
-  const { email, password } = req.body;
-  console.log(email, password);
+  const { email, password} = req.query;
+
   let existingUser;
 
   try {
