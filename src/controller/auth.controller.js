@@ -20,7 +20,7 @@ const defaultErrorResponse = (error) => {
   return response;
 };
 
-const singup = async (req, res, next) => {
+const signup = async (req, res, next) => {
   // Esta funciona para crear usuarios con la pass hasheada no tiene ningun tipo 
   // de comprobacion de usuarios existentes
   const {
@@ -45,7 +45,7 @@ const singup = async (req, res, next) => {
     };
     const ResNewUser = await User.create(NewUser);
     return res.status(201).json({
-      NewUserDb: ResNewUser,
+      id: ResNewUser.id,
     });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -107,5 +107,5 @@ const login = async (req, res, next) => {
 
 module.exports = {
   login,
-  singup,
+  signup,
 };
